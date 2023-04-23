@@ -1,4 +1,5 @@
-#Usage: creates subdirectories and automatically moves all files into their respective directories
+# Created 24.09.2020
+# Usage: creates subdirectories and automatically moves all files into their respective directory
 # e.g. "DATA.xlsx" -> creates folder "EXCEL" -> moves file "DATA.xlsx" into "EXCEL"
 
 import os
@@ -13,7 +14,7 @@ directories = {
     "BILDER": ['.png']
 }
 
-#Function to pick the Directory
+# Function to pick the directory
 def pickDir(value):
     for category, suffixes in directories.items():
         for suffix in suffixes:
@@ -21,7 +22,7 @@ def pickDir(value):
                 return category
     return category
 
-#Function to organize the Directory
+# Function to organize the directory
 def orgDir():
     for item in os.scandir():
         if item.is_dir():
@@ -35,5 +36,5 @@ def orgDir():
         filePath.rename(directoryPath.joinpath(filePath))
         print ("moved file:", filePath, "to:", directoryPath)
         
-#Running the Script
+# Running the Script
 orgDir()
