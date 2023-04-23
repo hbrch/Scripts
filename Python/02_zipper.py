@@ -1,4 +1,5 @@
-# Usage: change "container.zip" to your desired archive name.
+# Created 02.06.2022
+# Usage: change "container.zip" to the desired archive name.
 # Move the .py file into the directory and run it 
 
 import zipfile
@@ -28,5 +29,6 @@ def main():
         # Delete the original file
         os.remove(filename)
 
+# main
 if __name__ == "__main__":
     main()
