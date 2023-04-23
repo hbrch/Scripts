@@ -5,7 +5,7 @@ import zipfile
 import os
 
 def main():
-    # Create a ZipFile object
+    # Create a ZipFile
     zip_file = zipfile.ZipFile("container.zip", "w")
 
     # List to store the names of the files
@@ -15,7 +15,7 @@ def main():
     for filename in os.listdir():
         # Check if the file has the wanted extension e.g '.txt'
         if filename.endswith(".txt"):
-            # Add the file to the list of .rxo files
+            # Add the file to the list "files"
             files.append(filename)
             # Add the file to the zip archive
             zip_file.write(filename)
