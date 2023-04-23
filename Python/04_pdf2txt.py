@@ -4,7 +4,7 @@
 import PyPDF2
 import os
 
-# Function to check if file exists
+# Check if the file exists
 def file_existence_checker(file_path):
     if os.path.isfile(file_path):
         return True
