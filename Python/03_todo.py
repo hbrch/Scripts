@@ -1,4 +1,5 @@
-#!/usr/bin/env python
+# Created 19.02.2021
+# ToDo Terminal Script using Markdown
 
 import os
 import sys
@@ -8,26 +9,20 @@ TODO_FILE = 'todo.md'
 
 # functions
 def create_todo_file(file_path):
-    """
-    Create a new to-do list Markdown file if it doesn't exist.
-    """
+    # Create a new Markdown file if it doesn't exist yet
     if not os.path.exists(file_path):
         with open(file_path, 'w') as f:
             f.write('# To-Do List\n\n')
 
 def add_task(file_path, task):
-    """
-    Add a new task to the to-do list.
-    """
+    # Add a new task to the to-do list
     create_todo_file(file_path)
 
     with open(file_path, 'a') as f:
         f.write('- [ ] {}\n'.format(task))
 
 def remove_task(file_path, index):
-    """
-    Remove a task from the to-do list by its index.
-    """
+    # Remove a task from the to-do list by its index.
     create_todo_file(file_path)
 
     tasks = get_tasks(file_path)
@@ -43,9 +38,7 @@ def remove_task(file_path, index):
             f.write('- [{}] {}\n'.format('x' if task.checked else ' ', task.text))
 
 def get_tasks(file_path):
-    """
-    Get a list of tasks from the to-do list file.
-    """
+    # Get a list of tasks from the to-do list file
     create_todo_file(file_path)
 
     with open(file_path) as f:
@@ -100,7 +93,7 @@ def main():
         else:
             continue
         
-        # clear the console and move the cursor to the top.
+        # Clear the console and move the cursor to the top
         print("\033c", end="")
         print("\033[0;0H", end="")
 
