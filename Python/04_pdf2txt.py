@@ -3,7 +3,7 @@
 # Usage: Enter the name of the PDF file first, after that the name of the .txt file you want to create
 import PyPDF2
 
-# Ask user for input and output file names
+# Ask for input and output file names
 input_file = input("Enter the name of the input PDF file: ")
 output_file = input("Enter the name of the output text file: ")
 
