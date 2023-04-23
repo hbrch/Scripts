@@ -1,3 +1,6 @@
+REM Created 27.03.2018
+REM Changes the current DNS Server  
+
 @echo off
 title DNS Changer
 echo.
