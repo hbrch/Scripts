@@ -2,6 +2,7 @@
 # Automated Install Script of either Docker or Podman, created for Fedora Server 37
 import os
 
+# Fedora Docker Installation
 def install_docker():
     os.system('sudo dnf -y install dnf-plugins-core')
     os.system('sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo')
@@ -9,6 +10,7 @@ def install_docker():
     os.system('sudo systemctl start docker')
     os.system('sudo systemctl enable docker')
 
+# Fedora Podman Installation
 def install_podman():
     os.system('sudo dnf -y install podman')
 
@@ -17,7 +19,7 @@ print("1. Install Docker")
 print("2. Install Podman")
 print("3. Exit script")
 
-choice = input("Please Select 1, 2 or 3. ")
+choice = input()
 
 match choice:
     case 1:
