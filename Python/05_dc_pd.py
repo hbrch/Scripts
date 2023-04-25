@@ -1,4 +1,5 @@
 # Created 25.02.2023
+# Automated Install Script of either Docker or Podman, created for Fedora Server 37
 import os
 
 def install_docker():
