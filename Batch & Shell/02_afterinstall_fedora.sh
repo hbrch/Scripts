@@ -1,7 +1,7 @@
+#!/bin/bash
 # Created 12.09.2022
 # Adding RPMFusion, Flatpak and the Multimedia Codecs
 # Also installs Firefox and Bitwarden
-#!/bin/bash
 
 if [[ $EUID -ne 0 ]]; then
   echo "You must be a root user to run this script, please run sudo ./install.sh" 2>&1
