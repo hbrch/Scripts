@@ -1,0 +1,37 @@
+---
+- name: Docker and Docker Compose
+  hosts: suse_servers
+  become: true
+
+  tasks:
+    - name: Update package cache
+      package:
+        name: '*'
+        state: latest
+        update_cache: yes
+
+    - name: Add Docker GPG key
+      rpm_key:
+        key: https://download.docker.com/linux/opensuse/gpg
+        state: present
+
+    - name: Add Docker YUM repository
+      zypper_repository:
+        name: docker
+        baseurl: https://download.docker.com/linux/opensuse/{{ ansible_distribution_release }}/$basearch/stable
+        gpgcheck: yes
+        gpgkey: https://download.docker.com/linux/opensuse/gpg
+        enabled: yes
+
+    - name: Install Docker
+      zypper:
+        name: docker-ce
+        state: present
+
+    - name: Install Docker Compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}
+        dest: /usr/local/bin/docker-compose
+        mode: 0755
+      vars:
+        docker_compose_version: 1.29.2
