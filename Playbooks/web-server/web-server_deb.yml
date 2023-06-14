@@ -1,0 +1,46 @@
+# Creates a basic web server, tested in Debian. Make sure Docker & Docker Compose is installed
+---
+- name: Installation of the Web Server Components
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create Apache Docker container
+      docker_container:
+        name: apache
+        image: httpd:latest
+        ports:
+          - "80:80"
+        volumes:
+          - /var/www/html:/usr/local/apache2/htdocs/
+        restart_policy: always
+
+    - name: Create PHP Docker container
+      docker_container:
+        name: php
+        image: php:latest
+        volumes:
+          - /var/www/html:/var/www/html
+        command: php -S 0.0.0.0:9000
+
+    - name: Install PHP modules on the PHP container
+      docker_container:
+        name: php
+        image: php:latest
+        command: apt-get update && apt-get install -y php-mysql php-curl php-gd php-json php-mbstring php-xml php-zip
+
+    - name: Restart Apache container to apply PHP changes
+      docker_container:
+        name: apache
+        state: restarted
