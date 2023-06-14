@@ -6,7 +6,7 @@ title Netzwerkeinstellungen setzen
 
 setlocal enabledelayedexpansion
 
-REM DNS Variablen
+REM DNS Variables
 set primaryDNS=192.168.1.1
 set secondaryDNS=192.168.1.254
 set ip_addr=192.168.1.83
@@ -23,7 +23,7 @@ set /p choice=
 REM Choice 1 = Custom
 if "%choice%"=="1" (
     echo Configuring Network...
-    REM 1: IP Adresse; 2: Subnetzmaske; 3: Standardgateway
+    REM 1: IP Adress; 2: Subnetmask; 3: Standardgateway
     netsh interface ipv4 set address name="Ethernet" static %ip_addr% %custom_subnet% %custom_gateway%
     netsh interface ipv4 set dns name="Ethernet" static %primaryDNS% primary
     netsh interface ipv4 add dns name="Ethernet" %secondaryDNS% index=2
@@ -32,7 +32,7 @@ if "%choice%"=="1" (
 REM Choice 2 = DHCP
 ) else if "%choice%"=="2" (
     echo Configuring Network...
-    REM DNS und IP Adresse werden über DHCP bezogen
+    REM DNS and IP will be set using DHCP
     netsh interface ip set address name="Ethernet" source=dhcp
     netsh interface ip set dns name="Ethernet" source=dhcp
     netsh interface ip set address name="Wi-Fi" source=dhcp
