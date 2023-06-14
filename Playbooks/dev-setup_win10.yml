@@ -1,0 +1,68 @@
+---
+# Windows 10 Update
+- name: Update Windows 10
+  hosts: windows
+  gather_facts: false
+  tasks:
+    - name: Install all available updates
+      win_updates:
+        category_names: SecurityUpdates,CriticalUpdates,UpdateRollups
+        state: installed
+
+# Configure the starting menu
+- name: Disable the Installation of suggested Applications
+  ansible.windows.win_regedit:
+    path: HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+    name: SilentInstalledAppsEnabled
+    data: 0
+    type: dword
+ 
+ - name: Disable suggestions of Applications
+  ansible.windows.win_regedit:
+    path: HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager
+    name: SystemPaneSuggestionsEnabled
+    data: 0
+    type: dword
+    
+# Set the Power Plan to High Performance
+- name: High Performance Plan
+  hosts: windows
+  gather_facts: false
+  tasks:
+    - name: Copy the PS Script
+      win_copy:
+        src: powershell/hp_plan.ps1
+        dest: C:\temp\hp_plan.ps1
+
+    - name: Run hp_plan.ps1
+      win_shell: |
+        powershell.exe -ExecutionPolicy Bypass -File C:\temp\hp_plan.ps1
+
+# Installation of VSCode and Python
+- name: Installation of VSCode and Python
+  hosts: windows
+  gather_facts: false
+  tasks:
+    - name: Download Visual Studio Code installer
+      win_get_url:
+        url: 'https://go.microsoft.com/fwlink/?LinkID=760868'
+        dest: C:\temp\vscode_installer.exe
+
+    - name: Install Visual Studio Code
+      win_shell: |
+        Start-Process -Wait -FilePath C:\temp\vscode_installer.exe -ArgumentList '/silent /mergetasks=!runcode'
+
+    - name: Download Python installer
+      win_get_url:
+        url: 'https://www.python.org/ftp/python/3.9.7/python-3.9.7-amd64.exe'
+        dest: C:\temp\python_installer.exe
+
+    - name: Install Python
+      win_shell: |
+        Start-Process -Wait -FilePath C:\temp\python_installer.exe -ArgumentList '/quiet PrependPath=1'
+
+    - name: Add Python to environment variables
+      win_environment:
+        name: PATH
+        state: present
+        value: 'C:\Python39;C:\Python39\Scripts'
