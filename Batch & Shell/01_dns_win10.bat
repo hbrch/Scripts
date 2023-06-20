@@ -2,7 +2,7 @@ REM Created 25.04.2023
 REM Changes the IP, Subnet, Gateway and primary and secondary DNS Servers
 REM Made for the latest Windows 10 Version
 @echo off
-title Netzwerkeinstellungen setzen
+title Network settings changer
 
 setlocal enabledelayedexpansion
 
