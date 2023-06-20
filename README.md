@@ -1,3 +1,3 @@
 # Scripts
 <br>
-Collection of some code snippets and scripts I often use. 
+Collection of scripts and other code snippets, mostly used for system administration.
