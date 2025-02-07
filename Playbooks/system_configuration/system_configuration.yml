@@ -1,0 +1,22 @@
+---
+- name: Update system configuration
+  hosts: all
+  become: yes
+  vars_files:
+    - "/Documents/Code/Ansible/Playbooks/system_configuration/sysconfig.yml"
+
+  tasks:
+    - name: Update sysctl settings
+      sysctl:
+        name: "{{ item.name }}"
+        value: "{{ item.value }}"
+        state: present
+        reload: yes
+      loop: "{{ sysctl }}"
+
+    - name: Update /etc/hosts file
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item.ip }} {{ item.name }}"
+        create: yes
+      loop: "{{ hosts }}"
