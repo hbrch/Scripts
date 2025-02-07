@@ -9,7 +9,7 @@ DISK_USAGE=$(df / | grep / | awk '{ print $5 }' | sed 's/%//g')
 
 # If disk usage exceeds threshold, send an alert
 if [ $DISK_USAGE -gt $THRESHOLD ]; then
-    echo "Warning: Disk usage is at ${DISK_USAGE}% which exceeds the threshold of ${THRESHOLD}%." | mail -s "Disk Usage Alert" admin@example.com
+    echo "Warning: Disk usage is at ${DISK_USAGE}% which exceeds the threshold of ${THRESHOLD}%." 
 fi
 
 # Output current disk usage for logging
