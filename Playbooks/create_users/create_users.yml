@@ -1,0 +1,33 @@
+---
+- name: Create and manage users from a file
+  hosts: all
+  become: yes
+  vars:
+    user_file: "/Documents/Code/Ansible/Playbooks/create_users/users.txt" 
+
+  tasks:
+    - name: Read the users file
+      set_fact:
+        users: "{{ lookup('file', user_file) | splitlines }}"
+
+    - name: Parse user details from the file
+      set_fact:
+        user_details: "{{ users | map('split', ',') | map('zip', ['username', 'password', 'groups']) | list }}"
+
+    - name: Create user accounts
+      user:
+        name: "{{ item.username }}"
+        password: "{{ item.password | password_hash('sha512') }}"
+        groups: "{{ item.groups | join(',') }}"
+        state: present
+      loop: "{{ user_details }}"
+      loop_control:
+        label: "{{ item.username }}"
+
+    - name: Add users to sudoers (if required)
+      lineinfile:
+        path: /etc/sudoers
+        line: "{{ item.username }} ALL=(ALL) NOPASSWD:ALL"
+        validate: visudo -cf %s
+      loop: "{{ user_details }}"
+      when: "'sudo' in item.groups"
