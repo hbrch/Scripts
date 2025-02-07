@@ -1,0 +1,35 @@
+---
+- name: Backup MySQL Database
+  hosts: database_servers
+  become: yes
+  vars:
+    mysql_user: "root"
+    mysql_password: "password"
+    backup_dir: "/backups/mysql"
+    db_name: "mydatabase"
+    backup_filename: "{{ db_name }}_{{ ansible_date_time.date }}.sql.gz"
+
+  tasks:
+    - name: Create backup directory
+      file:
+        path: "{{ backup_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Dump MySQL database
+      command: "mysqldump -u {{ mysql_user }} -p{{ mysql_password }} {{ db_name }} | gzip > {{ backup_dir }}/{{ backup_filename }}"
+    
+    - name: Verify the backup file exists
+      stat:
+        path: "{{ backup_dir }}/{{ backup_filename }}"
+      register: backup_file_stat
+
+    - name: Fail if backup file does not exist
+      fail:
+        msg: "Backup file was not created."
+      when: not backup_file_stat.stat.exists
+
+    - name: Copy backup to remote server
+      copy:
+        src: "{{ backup_dir }}/{{ backup_filename }}"
+        dest: "/remote-backup-location/{{ backup_filename }}"
