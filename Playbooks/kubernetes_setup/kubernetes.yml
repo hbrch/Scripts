@@ -1,0 +1,46 @@
+---
+- name: Install Kubernetes on Ubuntu Server
+  hosts: kube_nodes
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Add Kubernetes repository
+      apt_repository:
+        repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main"
+
+    - name: Install Kubernetes components (kubelet, kubeadm, kubectl)
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: present
+
+    - name: Hold Kubernetes packages at current version
+      apt:
+        name:
+          - kubelet
+          - kubeadm
+          - kubectl
+        state: held
+
+    - name: Initialize Kubernetes master node (on the master node)
+      shell: "kubeadm init"
+      when: inventory_hostname == 'master-node'
+
+    - name: Set up kubeconfig for the user
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /home/ubuntu/.kube/config
+        owner: ubuntu
+        group: ubuntu
+        mode: '0600'
+      when: inventory_hostname == 'master-node'
