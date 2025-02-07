@@ -1,0 +1,7 @@
+sysctl:
+  - { name: 'fs.file-max', value: '2097152' }
+  - { name: 'net.ipv4.ip_forward', value: '1' }
+
+hosts:
+  - { name: 'example.com', ip: '192.168.1.1' }
+  - { name: 'example.org', ip: '192.168.1.2' }
